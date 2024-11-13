@@ -170,10 +170,6 @@ inventory::inventory()
     cin >> A.price;
 }
 
-inventory::~inventory()
-{
-}
-
 void inventory::refill(Amt **head)
 {
     if (A.amount<70)

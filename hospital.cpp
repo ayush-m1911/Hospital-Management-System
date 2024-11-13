@@ -54,6 +54,46 @@ public:
     }
 };
 
+// Appointment class
+class Appointment {
+public:
+    string appointmentID;
+    int doctorID;
+    int patientID;
+    string date;
+
+    // Constructor to initialize appointment details and generate appointment ID
+    Appointment(const Doctor& doctor, const Patient& patient, const string& appointmentDate)
+        : doctorID(doctor.getId()), patientID(patient.getId()), date(appointmentDate) {
+        appointmentID = generateAppointmentID(); // Generate the appointment ID
+    }
+
+    // Method to generate the appointment ID using string concatenation
+    string generateAppointmentID() const {
+        return to_string(doctorID).insert(0, 4 - to_string(doctorID).length(), '0') + // Pad doctor ID with zeros
+               to_string(patientID).insert(0, 5 - to_string(patientID).length(), '0') + // Pad patient ID with zeros
+               date; // Using DDMM format without year
+    }
+    string toString() const {
+        return "AppID: " + appointmentID + " DocID: " + to_string(doctorID) + " PatID: " + to_string(patientID) + " Date: " + date;
+    }
+    // Static function to extract doctor ID from appointment ID
+     static Appointment fromString(const string& data) {
+        size_t pos = 0, prev_pos = 0;
+        vector<string> tokens;
+
+        while ((pos = data.find(',', prev_pos)) != string::npos) {
+            tokens.push_back(data.substr(prev_pos, pos - prev_pos));
+            prev_pos = pos + 1;
+        }
+        tokens.push_back(data.substr(prev_pos));
+
+        return Appointment(Doctor(stoi(tokens[1]), "", "", ""), 
+                           Patient(stoi(tokens[2]), "", "", ""), tokens[3]);
+    }
+};
+
+
 class Billing : public Doctor, public Patient {
 private:
     double totalAmount;

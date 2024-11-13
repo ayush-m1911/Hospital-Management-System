@@ -21,6 +21,168 @@ public:
     }
 };
 
+#include <iostream>
+using namespace std;
+
+typedef struct month
+{
+    int month;
+    int year;
+}Month;
+
+typedef struct expdate
+{
+    int date;
+    Month m;
+}Exp;
+
+typedef struct quant
+{
+    int amount;
+    double price;
+    Exp ddate;
+}Quant;
+
+typedef struct attendance
+{
+    Month m;
+    int attain[31];
+    Att *down;
+}Att;
+
+typedef struct time
+{
+    int hour;
+    int min;
+}Time;
+
+typedef struct schedule
+{
+    int date;
+    Month m;
+    Time t;
+}Sch;
+
+typedef struct amt
+{
+    Month m;
+    double amt;
+    Amt *next,*prev;
+}Amt;
+
+Amt *head=NULL;
+
+void show_amt_bankbal()
+{
+    if (head==NULL)
+    {
+        cout << "The history as well as current balence is 0";
+    }
+    else
+    {
+        Amt *temp = head;
+        while (temp->next!=NULL)
+        {
+            temp=temp->next;
+        }
+        cout << "Month :" << temp->m.month << "\t" << "Year :" << temp->m.year << endl;
+        cout << "Amount :" << temp->amt << endl;
+    }   
+}
+
+void show_history_bankbal()
+{
+    if (head==NULL)
+    {
+        cout << "The history as well as current balence is 0";
+    }
+    else
+    {
+        Amt *temp = head;
+        cout << "The bank account history is :\n";
+        while (temp!=NULL)
+        {
+            cout << "Month :" << temp->m.month << "\t" << "Year :" << temp->m.year << endl;
+            cout << "Amount :" << temp->amt << endl << endl;
+            temp=temp->next;
+        }
+    }    
+}
+
+static int flag=2005;
+class staff
+{
+private:
+    int staff_ID;
+    double salary;
+    Att *attendance;
+    Sch schedule;
+public:
+    staff();
+    ~staff();
+    void salary_assign(Amt **head);
+};
+
+staff::staff()
+{
+    cout << "Enter the salary of this guy :\t";
+    cin >> salary;
+    staff_ID=flag;
+    flag++;
+}
+
+staff::~staff()
+{
+}
+
+void staff::salary_assign(Amt **head)
+{
+    int days=0;
+    Att *temp=attendance;
+    for (int i = 0; i < attendance->m.month; i++)
+    {
+        temp=temp->down;
+    }
+    for (int i = 0; i < 31; i++)
+    {
+        if (temp->attain[i]==1)
+        {
+            days++;
+        }
+    }
+    (head)->amt-=days(int)(salary/30);
+}
+
+class inventory
+{
+private:
+    Quant A;
+public:
+    inventory();
+    ~inventory();
+    void refill(Amt **head);
+};
+
+inventory::inventory()
+{
+    A.amount=70;
+    cout << "Enter the price of this Inventory item :\t";
+    cin >> A.price;
+}
+
+inventory::~inventory()
+{
+}
+
+void inventory::refill(Amt **head)
+{
+    if (A.amount<70)
+    {
+        (head)->amt-=(70-A.amount)(A.price);
+        A.amount=70;
+    }
+}
+
 class Doctor : public Person {
 protected:
     string specialization;

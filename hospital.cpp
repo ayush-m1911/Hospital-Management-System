@@ -150,7 +150,7 @@ void staff::salary_assign(Amt **head)
             days++;
         }
     }
-    (head)->amt-=days(int)(salary/30);
+    (*head)->amt-=days*(int)(salary/30);
 }
 
 class inventory
@@ -174,7 +174,7 @@ void inventory::refill(Amt **head)
 {
     if (A.amount<70)
     {
-        (head)->amt-=(70-A.amount)(A.price);
+        (*head)->amt-=(70-A.amount)*(A.price);
         A.amount=70;
     }
 }
